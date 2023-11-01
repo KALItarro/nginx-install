@@ -1,0 +1,36 @@
+#!/bin/bash
+# chkconfig: - 99 20
+# description: Nginx Server Control Script
+NP="/usr/local/nginx/sbin/nginx"
+NPF="/usr/local/nginx/logs/nginx.pid"
+case "$1" in 
+  start)
+    $NP;
+    if [ $? -eq 0 ] 
+    then
+      echo "nginx is starting!! "
+    fi
+  ;;
+  stop)
+    kill -s QUIT $(cat $NPF)
+    if [ $? -eq 0 ]
+    then
+    echo "nginx is stopping!! "
+    fi
+  ;;
+  restart)
+    $0 stop
+    $0 start
+  ;;
+  reload)
+    kill -s HUP $(cat $NPF)
+    if [ $? -eq 0 ]
+    then
+      echo "nginx config file is reload! "
+    fi
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|reload}"
+    exit 1
+esac
+exit 0
